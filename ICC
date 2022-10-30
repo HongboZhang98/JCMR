@@ -1,0 +1,26 @@
+import pingouin as pg
+import pandas as pd
+import numpy as np
+import os
+folderPath = "E:\cinerep"
+
+data_1 = pd.read_excel(os.path.join(folderPath,"repro1.xlsx"))
+data_2 = pd.read_excel(os.path.join(folderPath,"repro2.xlsx"))
+
+data_1.insert(0,"reader",np.ones(data_1.shape[0]))
+data_2.insert(0,"reader",np.ones(data_2.shape[0])*2)
+
+data_1.insert(0,"target",range(data_1.shape[0]))
+data_2.insert(0,"target",range(data_2.shape[0]))
+
+data = pd.concat([data_1,data_2]) # make a data frame like the test data
+
+excel=pd.DataFrame(columns=['ICC', 'CI95%', 'Description'])
+for i in range(1,1410):
+  icc = pg.intraclass_corr(data = data, targets = "name", raters = "reader",ratings = (str(i)+'a'))
+  # print(icc)
+  df = pd.DataFrame(icc, columns=['ICC', 'CI95%', 'Description'])
+  excel=excel.append(df)
+
+print(excel)
+excel.to_excel('E:\cinerep/ICC.xlsx',index=False)
