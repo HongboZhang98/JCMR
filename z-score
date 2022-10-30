@@ -1,0 +1,15 @@
+import pandas
+from pandas import read_excel
+from sklearn import preprocessing
+
+
+dataset = read_excel('D:\cine1.xlsx', header=0, index_col=0)
+values = dataset.values
+values = values.astype('float32') 
+
+data = preprocessing.scale(values)
+df=pandas.DataFrame(data) 
+
+df.columns=dataset.columns 
+
+df.to_excel ('D:/cine1z.xlsx',index=None)
