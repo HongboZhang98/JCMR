@@ -1,0 +1,11 @@
+library(car)
+library(rms)
+library(pROC)
+
+bc<-read.csv("D:/train(JCMR).csv",sep=',',header=TRUE)
+f1 <-lrm(label ~ model, data=bc, x=TRUE, y=TRUE,maxit=1000)
+cal <- calibrate(f1)
+plot(cal,xlab="Clinical model predicted probability",
+     ylab="Actual HCM probability",
+     col="RED")
+adev.off()
